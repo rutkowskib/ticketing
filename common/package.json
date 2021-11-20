@@ -1,0 +1,18 @@
+{
+  "name": "@ruciuxd/common",
+  "version": "1.0.1",
+  "main": "./build/index.js",
+  "types": "./build/index.d.ts",
+  "files": [
+    "build/**/*"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "del-cli": "^4.0.1",
+    "typescript": "^4.5.2"
+  },
+  "scripts": {
+    "clean": "del ./build/*",
+    "build": "yarn clean && tsc"
+  }
+}

@@ -5,6 +5,9 @@ import cookieSession from 'cookie-session';
 import { errorHandler, NotFoundError } from '@ruciuxd/common';
 
 import { createTicketRouter } from './routes/new';
+import { showTicketRouter } from './routes/show';
+import { indexTicketRouter } from './routes';
+import { updateTicketResponse } from './routes/update';
 
 export const app = express();
 app.set('trust proxy', true);
@@ -15,6 +18,9 @@ app.use(cookieSession({
 }));
 
 app.use(createTicketRouter);
+app.use(showTicketRouter);
+app.use(indexTicketRouter);
+app.use(updateTicketResponse);
 
 app.get('*', () => { throw new NotFoundError() });
 app.use(errorHandler);

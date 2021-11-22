@@ -17,7 +17,7 @@ router.post('/api/tickets', currentUser, requireAuth, [
     const { title, price } = req.body;
     const ticket = Ticket.build({ title, price, userId: req.user!.id });
     await ticket.save();
-    res.sendStatus(201);
+    res.status(201).send(ticket);
 });
 
 export { router as createTicketRouter };

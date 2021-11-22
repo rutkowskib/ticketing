@@ -16,7 +16,7 @@ const start = async () => {
     }
 
     app.listen(3000, () => {
-        console.log('Auth service listening on 3000');
+        console.log('Tickets service listening on 3000');
     });
 };
 

@@ -15,7 +15,7 @@ router.post('/api/tickets', currentUser, requireAuth, [
         .withMessage('Price invalid')
 ], validateRequest, async (req: Request, res: Response) => {
     const { title, price } = req.body;
-    const ticket = Ticket.build({ title, price, userId: (req.user).id });
+    const ticket = Ticket.build({ title, price, userId: req.user!.id });
     await ticket.save();
     res.sendStatus(201);
 });

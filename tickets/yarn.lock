@@ -508,10 +508,10 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@ruciuxd/common@^1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@ruciuxd/common/-/common-1.0.2.tgz#12d592a395b9546f7df5bc1a41cc35a5ecafd2be"
-  integrity sha512-J5bZMMVUVLsrU7iIj8I8hAoHf/NHan4wCh1BJM732iqR3yRJXDoxmZ398TcnwJy2Z/vcw2rp3uZqq/sBiLpQww==
+"@ruciuxd/common@^1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@ruciuxd/common/-/common-1.0.3.tgz#4a239a193f672a85d6d245003e869b1cbd951d9c"
+  integrity sha512-k5ohPUjbOyOLZURqYtiOqQVb07M2HfD+wOzm7b/GATgLE8laTBwbWzuEGXZ0CwQs9qgys+E9apyarr+igxrI1w==
   dependencies:
     "@types/cookie-session" "^2.0.43"
     "@types/express" "^4.17.13"

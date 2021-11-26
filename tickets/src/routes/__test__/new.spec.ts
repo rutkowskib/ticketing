@@ -1,6 +1,7 @@
 import request from 'supertest';
 import { app } from '../../app';
 import { Ticket } from '../../models/ticket';
+import { natsWrapper } from '../../nats-wrapper';
 
 it('Has handler for /api/tickets post request', async () => {
     await request(app)
@@ -58,5 +59,5 @@ it('Should create ticket', async () => {
 
     tickets = await Ticket.find({});
     expect(tickets).toHaveLength(1);
-
+    expect(natsWrapper.client.publish).toHaveBeenCalled();
 });

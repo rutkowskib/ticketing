@@ -4,6 +4,7 @@ import { app } from '../../app';
 import { Ticket } from '../../models/ticket';
 import { Order } from '../../models/order';
 import { OrderStatus } from '@ruciuxd/common';
+import { natsWrapper } from '../../nats-wrapper';
 
 it('Returns and error if the ticket doesnt exist', async () => {
     const ticketId = new mongoose.Types.ObjectId;
@@ -36,7 +37,7 @@ it('Returns and error if the ticket is already reserved', async () => {
         .expect(400);
 });
 
-it('Reserves a ticket', async () => {
+it('Reserves a ticket and emits event', async () => {
     const ticket = Ticket.build({
         title: 'concert',
         price: 20,
@@ -54,6 +55,6 @@ it('Reserves a ticket', async () => {
 
     const order = await Order.findOne({});
     expect(order).toBeDefined();
-});
 
-it.todo('Emits order created');
+    expect(natsWrapper.client.publish).toHaveBeenCalled();
+});

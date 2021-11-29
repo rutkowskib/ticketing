@@ -7,7 +7,6 @@ interface TicketAttributes {
     id: string;
     title: string;
     price: number;
-    userId: string;
 }
 
 export interface TicketDoc extends mongoose.Document {
@@ -15,12 +14,12 @@ export interface TicketDoc extends mongoose.Document {
     title: string;
     price: number;
     version: number;
-    userId: string;
     isReserved(): Promise<boolean>;
 }
 
 interface TicketModel extends mongoose.Model<TicketDoc> {
     build(attributes: TicketAttributes): TicketDoc;
+    findByEvent(event: { id: string; version: number; }): Promise<TicketDoc | null>
 }
 
 const ticketSchema = new mongoose.Schema({
@@ -50,6 +49,13 @@ ticketSchema.statics.build = (attributes: TicketAttributes) => {
         _id: attributes.id,
         title: attributes.title,
         price: attributes.price,
+    });
+};
+
+ticketSchema.statics.findByEvent = (event) => {
+    return Ticket.findOne({
+        _id: event.id,
+        version: event.version - 1,
     });
 };
 

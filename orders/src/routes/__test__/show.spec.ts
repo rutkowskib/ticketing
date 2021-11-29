@@ -7,6 +7,7 @@ it('Fetches order', async () => {
     const ticket = Ticket.build({
         title: 'concert',
         price: 20,
+        id: new mongoose.Types.ObjectId().toHexString(),
     });
     await ticket.save();
 
@@ -32,6 +33,7 @@ it('Returns error for not existing order on not made by user', async () => {
     const ticket = Ticket.build({
         title: 'concert',
         price: 20,
+        id: new mongoose.Types.ObjectId().toHexString(),
     });
     await ticket.save();
 

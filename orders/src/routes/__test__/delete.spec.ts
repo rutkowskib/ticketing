@@ -4,11 +4,14 @@ import { Ticket } from '../../models/ticket';
 import { Order } from '../../models/order';
 import { OrderStatus } from '@ruciuxd/common';
 import { natsWrapper } from '../../nats-wrapper';
+import mongoose from 'mongoose';
 
 it('Marks an order as cancelled and publishes event', async () => {
     const ticket = await Ticket.build({
         title: 'concert',
         price: 20,
+        id: new mongoose.Types.ObjectId().toHexString(),
+
     });
     await ticket.save();
 

@@ -6,7 +6,6 @@ it('Updates version in ticket', async () => {
         title: 'concert',
         price: 20,
         id: new mongoose.Types.ObjectId().toHexString(),
-        userId: '1234',
     });
 
     await ticket.save();
@@ -29,7 +28,6 @@ it('Increments the version number', async () => {
         title: 'concert',
         price: 20,
         id: new mongoose.Types.ObjectId().toHexString(),
-        userId: '1234',
     });
     await ticket.save();
     expect(ticket.version).toEqual(0);

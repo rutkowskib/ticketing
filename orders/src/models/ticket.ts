@@ -1,13 +1,21 @@
 import mongoose from 'mongoose';
 import { Order } from './order';
 import { OrderStatus } from '@ruciuxd/common';
+import { updateIfCurrentPlugin } from 'mongoose-update-if-current';
 
 interface TicketAttributes {
+    id: string;
     title: string;
     price: number;
+    userId: string;
 }
 
-export interface TicketDoc extends mongoose.Document, TicketAttributes {
+export interface TicketDoc extends mongoose.Document {
+    id: string;
+    title: string;
+    price: number;
+    version: number;
+    userId: string;
     isReserved(): Promise<boolean>;
 }
 
@@ -34,8 +42,15 @@ const ticketSchema = new mongoose.Schema({
     },
 });
 
+ticketSchema.set('versionKey', 'version');
+ticketSchema.plugin(updateIfCurrentPlugin);
+
 ticketSchema.statics.build = (attributes: TicketAttributes) => {
-    return new Ticket(attributes);
+    return new Ticket({
+        _id: attributes.id,
+        title: attributes.title,
+        price: attributes.price,
+    });
 };
 
 ticketSchema.methods.isReserved = async function () {

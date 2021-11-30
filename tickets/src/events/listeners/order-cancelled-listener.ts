@@ -1,27 +1,27 @@
 import { Message } from 'node-nats-streaming';
-import { Listener, OrderCreatedEvent, Subjects } from '@ruciuxd/common';
+import { Listener, OrderCancelledEvent, Subjects } from '@ruciuxd/common';
 import { QUEUE_GROUP_NAME } from './const';
 import { Ticket } from '../../models/ticket';
 import { TicketUpdatedPublisher } from '../publishers/tickets-updated-publisher';
 
-export class OrderCreatedListener extends Listener<OrderCreatedEvent> {
-    subject: Subjects.OrderCreated = Subjects.OrderCreated;
+export class OrderCancelledListener extends Listener<OrderCancelledEvent> {
+    subject: Subjects.OrderCancelled = Subjects.OrderCancelled;
     queueGroupName = QUEUE_GROUP_NAME;
 
-    async onMessage(data: OrderCreatedEvent["data"], message: Message): Promise<void>{
+    async onMessage(data: OrderCancelledEvent["data"], message: Message): Promise<void>{
         const ticket = await Ticket.findById(data.ticket.id);
+
         if (!ticket) {
             throw new Error('Ticket not found');
         }
-        ticket.set({ orderId: data.id });
+        ticket.set({ orderId: undefined });
         await ticket.save();
-
-        new TicketUpdatedPublisher(this.client).publish({
+        await new TicketUpdatedPublisher(this.client).publish({
             id: ticket.id,
+            orderId: ticket.orderId,
+            userId: ticket.userId,
             price: ticket.price,
             title: ticket.title,
-            userId: ticket.userId,
-            orderId: ticket.orderId,
             version: ticket.version,
         });
         message.ack();

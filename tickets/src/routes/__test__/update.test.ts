@@ -107,3 +107,29 @@ it('Returns 200 and updates ticket', async () => {
     expect(updatedTicket!.title).toEqual(title);
     expect(updatedTicket!.price).toEqual(price);
 });
+
+it('Rejects updates if ticket is reserved', async () => {
+    const cookie = global.signin();
+
+    const response = await request(app)
+        .post('/api/tickets')
+        .set('Cookie', cookie)
+        .send({
+            title: 'asdsad',
+            price: 20,
+        })
+        .expect(201);
+
+    const ticket = await Ticket.findById(response.body.id);
+    ticket!.set({ orderId: new mongoose.Types.ObjectId().toHexString() });
+    await ticket!.save();
+
+    await request(app)
+        .put(`/api/tickets/${ticket!.id}`)
+        .set('Cookie', cookie)
+        .send({
+            title: 'asdsad',
+            price: 20,
+        })
+        .expect(400);
+});

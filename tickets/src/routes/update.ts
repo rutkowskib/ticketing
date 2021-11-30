@@ -1,6 +1,13 @@
 import express, { Request, Response } from 'express';
 import { Ticket } from '../models/ticket';
-import { currentUser, NotFoundError, requireAuth, UnauthorizedError, validateRequest } from '@ruciuxd/common';
+import {
+    BadRequestError,
+    currentUser,
+    NotFoundError,
+    requireAuth,
+    UnauthorizedError,
+    validateRequest
+} from '@ruciuxd/common';
 import { body } from 'express-validator';
 import { natsWrapper } from '../nats-wrapper';
 import { TicketUpdatedPublisher } from '../events/publishers/tickets-updated-publisher';
@@ -21,6 +28,11 @@ router.put('/api/tickets/:id', currentUser, requireAuth, [
     if (!ticket) {
         throw new NotFoundError();
     }
+
+    if (ticket.orderId) {
+        throw new BadRequestError('Ticket is reserved');
+    }
+
     if (ticket.userId !== req.user!.id) {
         throw new UnauthorizedError();
     }

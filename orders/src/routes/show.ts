@@ -15,7 +15,7 @@ router.get('/api/orders/:id', currentUser, requireAuth, async (req: Request, res
     if (order.userId !== req.user!.id) {
         throw new NotFoundError();
     }
-    res.send({});
+    res.send(order);
 });
 
 export { router as showOrderRouter };

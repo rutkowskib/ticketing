@@ -27,6 +27,7 @@ router.post('/api/payments', currentUser, requireAuth, [
 ], validateRequest, async (req: Request, res: Response) => {
     const { token, orderId } = req.body;
 
+    console.log(await Order.find());
     const order = await Order.findById(orderId);
     if (!order) {
         throw new NotFoundError();

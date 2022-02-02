@@ -6,7 +6,7 @@ import useRequest from '../../hooks/use-request';
 const OrderShow = ({ order, currentUser }) => {
   const [timeLeft, setTimeLeft] = useState(0);
   const { doRequest, errors } = useRequest({
-    url: '/api/payments',
+    url: '/api/payments/',
     method: 'post',
     body: {
       orderId: order.id,
@@ -37,7 +37,7 @@ const OrderShow = ({ order, currentUser }) => {
       Time left to pay: {timeLeft} seconds
       <StripeCheckout
         token={({ id }) => doRequest({ token: id })}
-        stripeKey="pk_test_JMdyKVvf8EGTB0Fl28GsN7YY"
+        stripeKey={process.env.NEXT_PUBLIC_STRIPE_PK}
         amount={order.ticket.price * 100}
         email={currentUser.email}
       />
@@ -49,6 +49,8 @@ const OrderShow = ({ order, currentUser }) => {
 OrderShow.getInitialProps = async (context, client) => {
   const { orderId } = context.query;
   const { data } = await client.get(`/api/orders/${orderId}`);
+
+  console.log(data, 'order');
 
   return { order: data };
 };
